@@ -1,12 +1,16 @@
 #include <iostream>
 #include "ident.h"
 #include <vector>
+#include <string>
 #include "../sparse/rational_number.h"
+#include <fstream>
+#include "declare_parser.h"
 using namespace std;
-
 int main()
 {
-    vector<Ident*> v;
+
+
+   /* vector<Ident*> v;
     v.push_back(new Ident_Int("a", 12));
     v.push_back(new Ident_Rational("b", Rational_number("1/2")));
     Ident *i0 = v[0];
@@ -17,5 +21,10 @@ int main()
     b->set_value(1377);
     b = dynamic_cast<Ident_Int*>(v[0]);
     cout << *rat << endl << *b << endl;
+    */
+    Declare_parser d("text.mat");
+    d.parse();
+    d.print();
+    d.write("lex_log.txt");
     return 0;
 }

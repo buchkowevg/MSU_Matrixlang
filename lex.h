@@ -18,6 +18,7 @@ enum type_of_lex
     LEX_WRITE,
 
 
+    LEX_FIN,
     LEX_COMMA,
     LEX_OPEN_ROUND_BRACKET,
     LEX_CLOSE_ROUND_BRACKET,
@@ -34,17 +35,30 @@ enum type_of_lex
     LEX_MINUS,
     LEX_EQUAL,
     LEX_POWER,
+    LEX_SPACE,
 
     LEX_OPEN_COMM,
     LEX_CLOSE_COMM,
     LEX_VAR,
     LEX_STRING,
-    LEX_DIGIT
+    LEX_DIGIT,
+    LEX_DOUBLE
 };
 
 class Lex
 {
+    type_of_lex type;
+    std::string value;
+    unsigned int line;
+    unsigned int column;
 public:
+    Lex()
+    {
+        type =LEX_NULL;
+        value = "";
+        line = 0;
+        column = 0;
+    }
     Lex(unsigned int l, unsigned int c, type_of_lex t = LEX_NULL, const std::string &str = "")
     {
         type = t;
@@ -121,6 +135,8 @@ public:
         case LEX_WRITE:
             return "WRITE";
 
+        case LEX_FIN:
+            return "FIN";
         case LEX_COMMA:
             return "COMMA";
         case LEX_OPEN_ROUND_BRACKET:
@@ -181,11 +197,6 @@ public:
             s << " VALUE = <" << l.get_value() << ">;";
         return s << " }";
     }
-private:
-    type_of_lex type;
-    std::string value;
-    unsigned int line;
-    unsigned int column;
 };
 
 #endif // LEX_H

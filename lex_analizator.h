@@ -5,13 +5,12 @@
 #include <string>
 #include "ident.h"
 
-class Declare_parser
+class Lex_analizator
 {
     unsigned int line, column, prevline, prevcolumn;
     std::ifstream file;
     std::vector<Lex> lex_vector;
-    enum state{START, COMSHARP, COMSLASH, DEC, VAR, NAME, CONSTRUCTOR, STRING};
-    state CS;
+    std::string filename;
     static char TD[];
     static std::string TW[];
 
@@ -22,12 +21,16 @@ class Declare_parser
     char sharp_comm();
     char big_comm();
     std::string quotes();
-    bool isdigit(const std::string&) const;
+    bool isdigit(char) const;
+    char gc();
+    void ungc(char);
 public:    
+    Lex_analizator();
 
+    const std::vector<Lex>& get_vector() const;
+    void open(const std::string&);
     void write(const std::string&) const;
     void print() const;
-    Declare_parser(const std::string &);
     void parse();
 };
 

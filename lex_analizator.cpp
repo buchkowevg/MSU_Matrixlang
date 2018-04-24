@@ -1,9 +1,11 @@
 #include "lex_analizator.h"
 #include <iostream>
-#define SIZE_OF_TW 12
+#define SIZE_OF_TW 15
 #define SIZE_OF_TD 18
 
 using namespace std;
+
+
 Lex_analizator::Lex_analizator()
 {
     line = 1;
@@ -14,18 +16,21 @@ Lex_analizator::Lex_analizator()
 
 string Lex_analizator::TW[] =
 {
-    "",         //0
-    "declare",  //1
-    "integer",  //2
-    "float",    //3
-    "rational", //4
-    "vector",   //5
-    "matrix",   //6
-    "process",  //7
-    "info",     //8
-    "rotate",   //9
-    "print",    //10
-    "write"     //11
+    "",             //0
+    "declare",      //1
+    "integer",      //2
+    "float",        //3
+    "rational",     //4
+    "vector",       //5
+    "matrix",       //6
+    "process",      //7
+    "info",         //8
+    "rotate",       //9
+    "print",        //10
+    "write",        //11
+    "row",          //12
+    "column",       //13
+    "make_canonical"//14
 };
 
 char Lex_analizator::TD[] =

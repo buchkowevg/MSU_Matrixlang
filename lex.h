@@ -16,6 +16,9 @@ enum type_of_lex
     LEX_ROTATE,
     LEX_PRINT,
     LEX_WRITE,
+    LEX_ROW,
+    LEX_COLUMN,
+    LEX_CANONICAL,
 
 
     LEX_FIN,
@@ -54,7 +57,7 @@ class Lex
 public:
     Lex()
     {
-        type =LEX_NULL;
+        type = LEX_NULL;
         value = "";
         line = 0;
         column = 0;
@@ -113,62 +116,69 @@ public:
         case LEX_NULL:
             return "NULL";
         case LEX_DECLARE:
-            return "DECLARE";
+            return "declare";
         case LEX_INTEGER:
-            return "INTEGER";
+            return "integer";
         case LEX_FLOAT:
-            return "FLOAT";
+            return "float";
         case LEX_RATIONAL:
-            return "RATIONAL";
+            return "rational";
         case LEX_VECTOR:
-            return "VECTOR";
+            return "vector";
         case LEX_MATRIX:
-            return "MATRIX";
+            return "matrix";
         case LEX_PROCESS:
-            return "PROCESS";
+            return "process";
         case LEX_INFO:
-            return "INFO";
+            return "info";
         case LEX_ROTATE:
-            return "RAOTATE";
+            return "rotate";
         case LEX_PRINT:
-            return "PRINT";
+            return "print";
         case LEX_WRITE:
-            return "WRITE";
+            return "write";
+        case LEX_ROW:
+            return "row";
+        case LEX_COLUMN:
+            return "column";
+        case LEX_CANONICAL:
+            return "make_canonical";
+
 
         case LEX_FIN:
-            return "FIN";
+            return "EOF";
         case LEX_COMMA:
-            return "COMMA";
+            return ",";
         case LEX_OPEN_ROUND_BRACKET:
-            return "OPEN_ROUND_BRACKET";
+            return "(";
         case LEX_CLOSE_ROUND_BRACKET:
-            return "CLOSE_ROUND_BRACKET";
+            return ")";
         case LEX_QUOT:
-            return "QUOT";
+            return "\"";
         case LEX_SLASH:
-            return "SLASH";
+            return "/";
         case LEX_DOT:
-            return "DOT";
+            return ".";
         case LEX_SHARP_COMM:
-            return "SHARP";
+            return "#";
         case LEX_STAR:
-            return "STAR";
+            return "*";
         case LEX_COLON:
-            return "COLON";
+            return ":";
         case LEX_SEMICOLON:
-            return "SEMICOLON";
+            return ";";
         case LEX_OPEN_SQUARE_BRACKET:
-            return "OPEN_SQUARE_BRACKET";
+            return "[";
         case LEX_CLOSE_SQUARE_BRACKET:
-            return "CLOSE_SQUARE_BRACKET";
+            return "]";
         case LEX_PLUS:
-            return "PLUS";
+            return "+";
         case LEX_MINUS:
-            return "MINUS";
+            return "-";
         case LEX_EQUAL:
-            return "EQUAL";
+            return "=";
         case LEX_POWER:
-            return "POWER";
+            return "^";
 
         case LEX_OPEN_COMM:
             return "OPEN_COMM";
@@ -180,19 +190,22 @@ public:
             return "STRING";
         case LEX_DIGIT:
             return "DIGIT";
+        case LEX_DOUBLE:
+            return "DOUBLE";
         default:
             return "UNDEFINED";
         }
     }
-    friend std::string to_string(type_of_lex t)
+    friend std::string lex_to_string(type_of_lex t)
     {
         Lex l(0, 0);
         return l.get_str_value(t);
     }
+
     friend std::ostream& operator << (std::ostream& s,const Lex &l)
     {
         s << "{ POS(" << l.get_line() << ", " << l.get_column() <<
-                    "); TYPE = " << l.get_str_value(l.get_type()) << ";";
+                    "); TYPE = <" << l.get_str_value(l.get_type()) << ">;";
         if(l.get_value() != "")
             s << " VALUE = <" << l.get_value() << ">;";
         return s << " }";

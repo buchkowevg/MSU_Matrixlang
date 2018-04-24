@@ -16,8 +16,8 @@ class Lex_analizator
 
     type_of_lex lookTD(const char&) const;
     type_of_lex lookTW(const std::string&) const;
-    char skipNS(char c);
-    void linecolumn(char c);
+    char skipNS(char);
+    void linecolumn(char);
     char sharp_comm();
     char big_comm();
     std::string quotes();

@@ -19,7 +19,7 @@ enum type_of_lex
     LEX_ROW,
     LEX_COLUMN,
     LEX_CANONICAL,
-
+    LEX_READ,
 
     LEX_FIN,
     LEX_COMMA,
@@ -45,7 +45,12 @@ enum type_of_lex
     LEX_VAR,
     LEX_STRING,
     LEX_DIGIT,
-    LEX_DOUBLE
+    LEX_DOUBLE,
+    LEX_FUNCTION,
+    LEX_CONST,
+    LEX_UNARY_MINUS,
+    LEX_UNARY_PLUS,
+    LEX_GET_ELEM
 };
 
 class Lex
@@ -192,6 +197,16 @@ public:
             return "DIGIT";
         case LEX_DOUBLE:
             return "DOUBLE";
+        case LEX_FUNCTION:
+            return "FUNCTION";
+        case LEX_CONST:
+            return "CONST";
+        case LEX_UNARY_MINUS:
+            return "#";
+        case LEX_UNARY_PLUS:
+            return "$";
+        case LEX_GET_ELEM:
+            return "GET_ELEM";
         default:
             return "UNDEFINED";
         }

@@ -67,11 +67,14 @@ public:
 class Ident_Vector: public Ident
 {
     Vector value;
+    bool rotation;
 public:
-    Ident_Vector(const std::string &str, const Vector &val = Vector(0), unsigned int l = 0, unsigned int c = 0)
+    Ident_Vector(const std::string &str, const Vector &val = Vector(0), bool r = 0, unsigned int l = 0, unsigned int c = 0)
         : Ident(str, LEX_VECTOR, l, c)
-        { value = val; }
+        { value = val; rotation = r; }
     const Vector& get_value() const { return value; }
+    bool get_rotation() const { return rotation; }
+    void set_rotation(bool r) { rotation = r; }
     void set_value(const Vector& val) { value = val; }
     friend std::ostream& operator << (std::ostream& s, const Ident_Vector& obj) { return s << obj.get_value(); }
 };
@@ -86,5 +89,16 @@ public:
     const Matrix& get_value() const { return value; }
     void set_value(const Matrix& val) { value = val; }
     friend std::ostream& operator << (std::ostream& s, const Ident_Matrix& obj) { return s << obj.get_value(); }
+};
+class Ident_String: public Ident
+{
+    std::string value;
+public:
+    Ident_String(const std::string &str, const std::string &val = "", unsigned int l = 0, unsigned int c = 0)
+        : Ident(str, LEX_STRING, l, c)
+        { value = val; }
+    const std::string& get_value() const { return value; }
+    void set_value(const std::string& val) { value = val; }
+    friend std::ostream& operator << (std::ostream& s, const Ident_String& obj) { return s << obj.get_value(); }
 };
 #endif // IDENT_H

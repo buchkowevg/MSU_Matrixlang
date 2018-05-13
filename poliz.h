@@ -1,7 +1,7 @@
 #ifndef POLIZ_H
 #define POLIZ_H
 #include "ident.h"
-#include <forward_list>
+#include <stack>
 #include <iostream>
 
 class Poliz
@@ -17,7 +17,7 @@ public:
     Lex get_lexem() const;
     void set_lexem(Lex&);
 
-    virtual Ident* execute() = 0;
+    virtual void execute(std::stack<Poliz*> &) = 0;
     virtual Ident* get_value() const = 0;
     virtual void set_value(Ident*) = 0;
     virtual ~Poliz() = 0;
@@ -27,11 +27,11 @@ class Poliz_Const : public Poliz
     Ident *value;
 public:
     Poliz_Const();
-    Poliz_Const(Ident*, Lex);
+    Poliz_Const(Ident*, Lex = Lex(), type_of_lex t = LEX_CONST);
     ~Poliz_Const();
     virtual Ident* get_value() const;
     virtual void set_value(Ident*);
-    Ident* execute() { return nullptr; }
+    void execute(std::stack<Poliz*> &) { }
 };
 class Poliz_Var : public Poliz
 {
@@ -42,7 +42,7 @@ public:
     ~Poliz_Var() {}
     Ident* get_value() const;
     void set_value(Ident*);
-    Ident* execute() { return nullptr; }
+    void execute(std::stack<Poliz*> &) { }
 };
 class Poliz_Function : public Poliz
 {
@@ -52,22 +52,37 @@ public:
     Poliz_Function(type_of_lex, Lex);
     ~Poliz_Function() {}
     type_of_lex get_oper() const;
-    Ident* add();
-    Ident* sub();
-    Ident* mul();
-    Ident* div();
-    Ident* equal();
-    Ident* power();
-    Ident* write();
-    Ident* read();
-    Ident* print();
-    Ident* row();
-    Ident* column();
-    Ident* make_canonical();
-    Ident* minus();
-    Ident* get_elem();
-    void comma();
-    Ident* execute() { return nullptr; } //TODO
+    void add(std::stack<Poliz*> &);
+    void sub(std::stack<Poliz*> &);
+    void mul(std::stack<Poliz*> &);
+    void div(std::stack<Poliz*> &);
+    void equal(std::stack<Poliz*> &);
+    void power(std::stack<Poliz*> &);
+    void rotate(std::stack<Poliz*> &);
+    void write(std::stack<Poliz*> &);
+    void read(std::stack<Poliz*> &);
+    void print(std::stack<Poliz*> &);
+    void row(std::stack<Poliz*> &);
+    void column(std::stack<Poliz*> &);
+    void make_canonical(std::stack<Poliz*> &);
+    void minus(std::stack<Poliz*> &);
+    void get_elem(std::stack<Poliz*> &);
+    void comma(std::stack<Poliz*> &);
+    void semicolon(std::stack<Poliz*> &);
+    void execute(std::stack<Poliz*> &);
+    virtual Ident* get_value() const { return nullptr; }
+    virtual void set_value(Ident*) {}
+};
+class Poliz_Info : public Poliz
+{
+    std::string str;
+public:
+    Poliz_Info();
+    Poliz_Info(const std::string&);
+    const std::string& get_str() const;
+    void set_string(std::string&);
+    ~Poliz_Info() {}
+    void execute(std::stack<Poliz*> &);
     virtual Ident* get_value() const { return nullptr; }
     virtual void set_value(Ident*) {}
 };

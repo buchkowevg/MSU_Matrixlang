@@ -3,7 +3,6 @@
 #include "ident.h"
 #include "lex_analizator.h"
 #include "sin_analizarot.h"
-#include "poliz.h"
 using namespace std;
 int main(int argc, char** argv)
 {
@@ -30,6 +29,7 @@ int main(int argc, char** argv)
         s.parse();
         s.write_var_map("var_map.txt");
         s.write_poliz("poliz_log.txt");
+        s.execute();
     }
     catch(const string &ex)
     {

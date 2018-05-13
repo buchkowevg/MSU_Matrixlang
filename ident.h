@@ -1,6 +1,7 @@
 #ifndef IDENT_H
 #define IDENT_H
 #include <string>
+#include <vector>
 #include <ostream>
 #include "lex.h"
 #include "../sparse/matrix.h"
@@ -69,7 +70,7 @@ class Ident_Vector: public Ident
     Vector value;
     bool rotation;
 public:
-    Ident_Vector(const std::string &str, const Vector &val = Vector(0), bool r = 0, unsigned int l = 0, unsigned int c = 0)
+    Ident_Vector(const std::string &str, const Vector &val = Vector(0), bool r = false, unsigned int l = 0, unsigned int c = 0)
         : Ident(str, LEX_VECTOR, l, c)
         { value = val; rotation = r; }
     const Vector& get_value() const { return value; }
@@ -100,5 +101,18 @@ public:
     const std::string& get_value() const { return value; }
     void set_value(const std::string& val) { value = val; }
     friend std::ostream& operator << (std::ostream& s, const Ident_String& obj) { return s << obj.get_value(); }
+};
+class Ident_Comma: public Ident
+{
+    std::vector<int> value;
+public:
+    Ident_Comma(const std::vector<int> &vec) : Ident("", LEX_COMMA, 0, 0)
+    { value = vec; }
+    Ident_Comma() : Ident("", LEX_COMMA, 0, 0) {}
+    const std::vector<int>& get_value() const { return value; }
+    void set_value(const std::vector<int>& val) { value = val; }
+    void add(int v) { value.push_back(v); }
+    unsigned int get_length() const { return value.size(); }
+    int get_elem(unsigned int i) const { return value[i]; }
 };
 #endif // IDENT_H

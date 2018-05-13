@@ -50,7 +50,8 @@ enum type_of_lex
     LEX_CONST,
     LEX_UNARY_MINUS,
     LEX_UNARY_PLUS,
-    LEX_GET_ELEM
+    LEX_GET_ELEM,
+    LEX_TEMP_CONST
 };
 
 class Lex

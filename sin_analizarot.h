@@ -42,14 +42,16 @@ class Sin_analizarot
     void bracket_oper();
     void square_bracket();
     void square_oper();
-    void info(); //TODO
+    void info();
     void function();
     void unary();
+
 public:
     Sin_analizarot(const std::vector<Lex>&, const std::string&);
     ~Sin_analizarot();
     void write_var_map(const std::string&) const;
     void write_poliz(const std::string&) const;
     void parse();
+    void execute();
 };
 #endif // SIN_ANALIZAROT_H

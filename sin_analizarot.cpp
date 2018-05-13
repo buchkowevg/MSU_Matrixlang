@@ -15,7 +15,7 @@ Sin_analizarot::Sin_analizarot(const std::vector<Lex> &l, const std::string &f)
 void Sin_analizarot::gl()
 {
     if(lex_vector.empty())
-        throw "lex_vector empty";
+        throw string("lex_vector empty");
     curr_lex = lex_vector.front();
     lex_vector.erase(lex_vector.begin());
 }
@@ -33,16 +33,18 @@ void Sin_analizarot::write_poliz(const string &filename) const
             switch(static_cast<Poliz_Const*>(i)->get_value()->get_type())
             {
             case LEX_STRING:
-                f << "'\"" + static_cast<Ident_String*>(static_cast<Poliz_Const*>(i)->get_value())->get_value() +
-                     "\"' ";
+                f << "'\"" + static_cast<Ident_String*>
+                     (static_cast<Poliz_Const*>(i)->get_value())->get_value() + "\"' ";
                 break;
             case LEX_INTEGER:
-                f << "'" + to_string(static_cast<Ident_Int*>(static_cast<Poliz_Const*>(i)->get_value())->get_value()) +
-                     "' ";
+                f << "'" + to_string
+                     (static_cast<Ident_Int*>
+                      (static_cast<Poliz_Const*>(i)->get_value())->get_value()) + "' ";
                 break;
             case LEX_FLOAT:
-                f << "'" + to_string(static_cast<Ident_Float*>(static_cast<Poliz_Const*>(i)->get_value())->get_value()) +
-                     "' ";
+                f << "'" + to_string
+                     (static_cast<Ident_Float*>
+                      (static_cast<Poliz_Const*>(i)->get_value())->get_value()) + "' ";
                 break;
             default:
                 f << "<UNDEFINED CONST> ";
@@ -54,6 +56,9 @@ void Sin_analizarot::write_poliz(const string &filename) const
                 f << lex_to_string(static_cast<Poliz_Function*>(i)->get_oper()) << " ";
             else
                 f << ";\n";
+            break;
+        case LEX_INFO:
+            f << "i ";
             break;
         default:
             f << "<UNDEFINED> ";
@@ -74,27 +79,32 @@ void Sin_analizarot::write_var_map(const string& filename) const
         {
         case LEX_INTEGER:
             f << "***********" << endl;
-            f << "TYPE = <" << lex_to_string(id->get_type()) << "> NAME = <" << id->get_name() << ">" << endl;
+            f << "TYPE = <" << lex_to_string(id->get_type()) <<
+                 "> NAME = <" << id->get_name() << ">" << endl;
             f << static_cast<Ident_Int*>(id)->get_value() << endl;
             break;
         case LEX_FLOAT:
             f << "***********" << endl;
-            f << "TYPE = <" << lex_to_string(id->get_type()) << "> NAME = <" << id->get_name() << ">" << endl;
+            f << "TYPE = <" << lex_to_string(id->get_type()) <<
+                 "> NAME = <" << id->get_name() << ">" << endl;
             f << static_cast<Ident_Float*>(id)->get_value() << endl;
             break;
         case LEX_RATIONAL:
             f << "***********" << endl;
-            f << "TYPE = <" << lex_to_string(id->get_type()) << "> NAME = <" << id->get_name() << ">" << endl;
+            f << "TYPE = <" << lex_to_string(id->get_type()) <<
+                 "> NAME = <" << id->get_name() << ">" << endl;
             f << static_cast<Ident_Rational*>(id)->get_value() << endl;
             break;
         case LEX_VECTOR:
             f << "***********" << endl;
-            f << "TYPE = <" << lex_to_string(id->get_type()) << "> NAME = <" << id->get_name() << ">" << endl;
+            f << "TYPE = <" << lex_to_string(id->get_type()) <<
+                 "> NAME = <" << id->get_name() << ">" << endl;
             f << static_cast<Ident_Vector*>(id)->get_value() << endl;
             break;
         case LEX_MATRIX:
             f << "***********" << endl;
-            f << "TYPE = <" << lex_to_string(id->get_type()) << "> NAME = <" << id->get_name() << ">" << endl;
+            f << "TYPE = <" << lex_to_string(id->get_type()) <<
+                 "> NAME = <" << id->get_name() << ">" << endl;
             f << static_cast<Ident_Matrix*>(id)->get_value() << endl;
             break;
         default:
@@ -113,15 +123,10 @@ bool Sin_analizarot::isoper(type_of_lex type) const
 {
     switch (type) {
     case LEX_STAR:
-        return true;
     case LEX_SLASH:
-        return true;
     case LEX_PLUS:
-        return true;
     case LEX_MINUS:
-        return true;
     case LEX_POWER:
-        return true;
     case LEX_EQUAL:
         return true;
     default:
@@ -132,11 +137,8 @@ bool Sin_analizarot::isvar_const(type_of_lex type) const
 {
     switch (type) {
     case LEX_DIGIT:
-        return true;
     case LEX_DOUBLE:
-        return true;
     case LEX_VAR:
-        return true;
     case LEX_STRING:
         return true;
     default:
@@ -147,17 +149,11 @@ bool Sin_analizarot::isfunction(type_of_lex type) const
 {
     switch (type) {
     case LEX_CANONICAL:
-        return true;
     case LEX_ROTATE:
-        return true;
     case LEX_PRINT:
-        return true;
     case LEX_WRITE:
-        return true;
     case LEX_ROW:
-        return true;
     case LEX_COLUMN:
-        return true;
     case LEX_READ:
         return true;
     default:
@@ -167,36 +163,34 @@ bool Sin_analizarot::isfunction(type_of_lex type) const
 unsigned int Sin_analizarot::check_your_privilege(type_of_lex type) const
 {
     if(isfunction(type))
-        return 8;
+        return 9;
     switch (type) {
     case LEX_SEMICOLON:
-        return 11;
+        return 12;
     case LEX_OPEN_SQUARE_BRACKET:
-        return 10;
     case LEX_CLOSE_SQUARE_BRACKET:
-        return 10;
+        return 11;
     case LEX_UNARY_MINUS:
-        return 9;
+        return 10;
     case LEX_COLON:
-        return 7;
+        return 8;
     case LEX_POWER:
-        return 6;
+        return 7;
     case LEX_SLASH:
-        return 5;
     case LEX_STAR:
-        return 5;
+        return 6;
     case LEX_PLUS:
-        return 4;
     case LEX_MINUS:
-        return 4;
+        return 5;
     case LEX_EQUAL:
-        return 3;
+        return 4;
     case LEX_OPEN_ROUND_BRACKET:
-        return 2;
     case LEX_CLOSE_ROUND_BRACKET:
-        return 2;
+        return 3;
     case LEX_COMMA:
-        return 1;
+        return 2;
+    case LEX_INFO:
+        return 100000;
     default:
         return 0;
     }
@@ -206,53 +200,59 @@ void Sin_analizarot::add_to_poliz()
     Lex l;
     if(curr_lex.get_type() == LEX_UNARY_PLUS)
         return;
-    if(check_your_privilege(curr_lex.get_type()) == 0)
+    else if(check_your_privilege(curr_lex.get_type()) == 0)
     {
         if(curr_lex.get_type() == LEX_VAR)
         {
             if(var_map.find(curr_lex.get_value()) == var_map.end())
                 exeption("'" + curr_lex.get_value() + "' was not declared");
-            poliz_vector.push_back(new Poliz_Var(var_map.at(curr_lex.get_value()), curr_lex));
+            poliz_vector.push_back(new Poliz_Var
+                                   (var_map.at(curr_lex.get_value()), curr_lex));
         }
         else
         {
             switch (curr_lex.get_type()) {
             case LEX_DIGIT:
-                poliz_vector.push_back(new Poliz_Const(
-                                           new Ident_Int("",
-                                                         stoi(curr_lex.get_value()),
-                                                         curr_lex.get_line(), curr_lex.get_column()),
+                poliz_vector.push_back(new Poliz_Const
+                                       (new Ident_Int
+                                        ("", stoi(curr_lex.get_value()),
+                                         curr_lex.get_line(), curr_lex.get_column()),
                                            curr_lex));
                 break;
             case LEX_DOUBLE:
-                poliz_vector.push_back(new Poliz_Const(
-                                           new Ident_Float("",
-                                                           stod(curr_lex.get_value()),
-                                                           curr_lex.get_line(), curr_lex.get_column()),
+                poliz_vector.push_back(new Poliz_Const
+                                       (new Ident_Float
+                                        ("", stod(curr_lex.get_value()),
+                                         curr_lex.get_line(), curr_lex.get_column()),
                                            curr_lex));
                 break;
             case LEX_STRING:
-                poliz_vector.push_back(new Poliz_Const(
-                                           new Ident_String("",
-                                                           curr_lex.get_value(),
-                                                           curr_lex.get_line(), curr_lex.get_column()),
+                poliz_vector.push_back(new Poliz_Const
+                                       (new Ident_String
+                                           ("", curr_lex.get_value(), curr_lex.get_line(),
+                                            curr_lex.get_column()),
                                            curr_lex));
                 break;
             default:
-                throw "Smth bad happend in add_to_poliz";
+                throw string("Smth bad happend in add_to_poliz");
                 break;
             }
         }
     }
     else
     {
-        if(curr_lex.get_type() == LEX_OPEN_SQUARE_BRACKET || curr_lex.get_type() == LEX_OPEN_ROUND_BRACKET)
+        if(curr_lex.get_type() == LEX_OPEN_SQUARE_BRACKET ||
+                curr_lex.get_type() == LEX_OPEN_ROUND_BRACKET)
             poliz_stack.push(curr_lex);
         else if (curr_lex.get_type() == LEX_SEMICOLON)
         {
             while(!poliz_stack.empty())
             {
-                poliz_vector.push_back(new Poliz_Function(poliz_stack.top().get_type(), poliz_stack.top()));
+                if(poliz_stack.top().get_type() == LEX_INFO)
+                    poliz_vector.push_back(new Poliz_Info(poliz_stack.top().get_value()));
+                else
+                    poliz_vector.push_back(new Poliz_Function(poliz_stack.top().get_type(),
+                                                              poliz_stack.top()));
                 poliz_stack.pop();
             }
             poliz_vector.push_back(new Poliz_Function(LEX_SEMICOLON, curr_lex));
@@ -263,7 +263,10 @@ void Sin_analizarot::add_to_poliz()
         {
             while((l = poliz_stack.top()).get_type() != LEX_OPEN_ROUND_BRACKET)
             {
-                poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
+                if(l.get_type() == LEX_INFO)
+                    poliz_vector.push_back(new Poliz_Info(l.get_value()));
+                else
+                    poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
                 poliz_stack.pop();
             }
             poliz_stack.pop();
@@ -272,7 +275,10 @@ void Sin_analizarot::add_to_poliz()
         {
             while((l = poliz_stack.top()).get_type() != LEX_OPEN_SQUARE_BRACKET)
             {
-                poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
+                if(l.get_type() == LEX_INFO)
+                    poliz_vector.push_back(new Poliz_Info(l.get_value()));
+                else
+                    poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
                 poliz_stack.pop();
             }
             poliz_stack.pop();
@@ -288,9 +294,13 @@ void Sin_analizarot::add_to_poliz()
             {
                 if(curr_lex.get_type() == LEX_UNARY_MINUS)
                 {
-                    if(check_your_privilege(l.get_type()) > check_your_privilege(curr_lex.get_type()))
+                    if(check_your_privilege(l.get_type()) > check_your_privilege
+                            (curr_lex.get_type()))
                     {
-                        poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
+                        if(l.get_type() == LEX_INFO)
+                            poliz_vector.push_back(new Poliz_Info(l.get_value()));
+                        else
+                            poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
                         poliz_stack.pop();
                         poliz_stack.push(curr_lex);
                     }
@@ -300,9 +310,13 @@ void Sin_analizarot::add_to_poliz()
                     }
 
                 }
-                else if(check_your_privilege(l.get_type()) >= check_your_privilege(curr_lex.get_type()))
+                else if(check_your_privilege(l.get_type()) >= check_your_privilege
+                        (curr_lex.get_type()))
                 {
-                    poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
+                    if(l.get_type() == LEX_INFO)
+                        poliz_vector.push_back(new Poliz_Info(l.get_value()));
+                    else
+                        poliz_vector.push_back(new Poliz_Function(l.get_type(), l));
                     poliz_stack.pop();
                     poliz_stack.push(curr_lex);
                 }
@@ -317,6 +331,7 @@ void Sin_analizarot::add_to_poliz()
 
 void Sin_analizarot::info()
 {
+    Lex l;
     while(curr_lex.get_type() == LEX_INFO)
     {
         gl();
@@ -326,11 +341,16 @@ void Sin_analizarot::info()
         gl();
         info();
         if(curr_lex.get_type() != LEX_STRING)
-            exeption("expected 'const string' got '" + lex_to_string(curr_lex.get_type()) + "'");
+            exeption("expected 'const string' got '" + lex_to_string(curr_lex.get_type())
+                     + "'");
+        l = curr_lex;
         gl();
         info();
         if(curr_lex.get_type() != LEX_CLOSE_ROUND_BRACKET)
             exeption("expected ')' got '" + lex_to_string(curr_lex.get_type()) + "'");
+        l.set_type(LEX_INFO);
+        curr_lex = l;
+        add_to_poliz();
         gl();
     }
 
@@ -410,11 +430,19 @@ void Sin_analizarot::square_oper()
     }
     else if(curr_lex.get_type() == LEX_CLOSE_SQUARE_BRACKET)
         return;
+    else if(curr_lex.get_type() == LEX_COMMA)
+    {
+        add_to_poliz();
+        gl();
+    }
     else if(isoper(curr_lex.get_type())
             || curr_lex.get_type() == LEX_COMMA)
     {
         add_to_poliz();
         gl();
+        if(curr_lex.get_type() == LEX_CLOSE_SQUARE_BRACKET)
+            exeption("expected 'var' or 'const' got '" +
+                     lex_to_string(curr_lex.get_type()));
     }
     else if(curr_lex.get_type() == LEX_OPEN_SQUARE_BRACKET)
     {
@@ -464,7 +492,8 @@ void Sin_analizarot::square_bracket()
         else
         {
             if(!isvar_const(curr_lex.get_type()))
-                exeption("expected 'var' or 'const' got '" + lex_to_string(curr_lex.get_type()));
+                exeption("expected 'var' or 'const' got '" +
+                         lex_to_string(curr_lex.get_type()));
             add_to_poliz();
             gl();
             info();
@@ -487,6 +516,9 @@ void Sin_analizarot::bracket_oper()
     {
         add_to_poliz();
         gl();
+        if(curr_lex.get_type() == LEX_CLOSE_ROUND_BRACKET)
+            exeption("expected 'var' or 'const' got '" +
+                     lex_to_string(curr_lex.get_type()));
     }
     else if(curr_lex.get_type() == LEX_OPEN_SQUARE_BRACKET)
     {
@@ -500,13 +532,13 @@ void Sin_analizarot::bracket_oper()
             curr_lex = open_b;
             exeption("unterminated '['");
         }
-        add_to_poliz();
+        //add_to_poliz();
         gl();
         info();
     }
     else
-        exeption("expected 'operator' got '" + lex_to_string(curr_lex.get_type()) +
-                 "'");
+        exeption("expected 'operator' got '" +
+                 lex_to_string(curr_lex.get_type()) + "'");
 }
 void Sin_analizarot::bracket()
 {
@@ -536,7 +568,8 @@ void Sin_analizarot::bracket()
         else
         {
             if(!isvar_const(curr_lex.get_type()))
-                exeption("expected 'var' or 'const' got '" + lex_to_string(curr_lex.get_type()));
+                exeption("expected 'var' or 'const' got '" +
+                         lex_to_string(curr_lex.get_type()));
             add_to_poliz();
             gl();
         }
@@ -552,8 +585,16 @@ void Sin_analizarot::process_oper()
         function();
         process_oper();
     }
-    else if(isoper(curr_lex.get_type()) ||
-            curr_lex.get_type() == LEX_SEMICOLON)
+    else if(isoper(curr_lex.get_type()))
+    {
+        add_to_poliz();
+        gl();
+        if(curr_lex.get_type() == LEX_SEMICOLON ||
+                curr_lex.get_type() == LEX_FIN)
+            exeption("expected 'var' or 'const' got '" +
+                     lex_to_string(curr_lex.get_type()) + "'");
+    }
+    else if(curr_lex.get_type() == LEX_SEMICOLON)
     {
         add_to_poliz();
         gl();
@@ -576,8 +617,8 @@ void Sin_analizarot::process_oper()
         process_oper();
     }
     else
-        exeption("expected 'operator' got '" + lex_to_string(curr_lex.get_type()) +
-                 "'");
+        exeption("expected 'operator' got '" +
+                 lex_to_string(curr_lex.get_type()) + "'");
 }
 void Sin_analizarot::process2()
 {
@@ -613,8 +654,8 @@ void Sin_analizarot::process2()
             else
             {
                 if(!isvar_const(curr_lex.get_type()))
-                    exeption("expected 'var' or 'const' got '" + lex_to_string(curr_lex.get_type())
-                             + "'");
+                    exeption("expected 'var' or 'const' got '" +
+                             lex_to_string(curr_lex.get_type()) + "'");
                 add_to_poliz();
                 gl();
                 process_oper();
@@ -675,7 +716,8 @@ void Sin_analizarot:: constructor1()
                         gl();
                     }
                     if(curr_lex.get_type() != LEX_DIGIT)
-                        exeption(string("unexpected '") + lex_to_string(curr_lex.get_type()) +
+                        exeption(string("unexpected '") +
+                                 lex_to_string(curr_lex.get_type()) +
                                  "' expected digit");
                     str += curr_lex.get_value();
                     type = LEX_RATIONAL;
@@ -709,7 +751,8 @@ void Sin_analizarot:: constructor1()
                         gl();
                     }
                     if(curr_lex.get_type() != LEX_DIGIT)
-                        exeption(string("unexpected '") + lex_to_string(curr_lex.get_type()) +
+                        exeption(string("unexpected '") +
+                                 lex_to_string(curr_lex.get_type()) +
                                  "' expected digit");
                     type = LEX_RATIONAL;
                     str += curr_lex.get_value();
@@ -795,13 +838,15 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
             break;
         case 1:
             if(dec_vector[0].get_type() == LEX_DIGIT)
-                idRational = new Ident_Rational(name, dec_vector[0].get_value().c_str(), l, c);
+                idRational = new Ident_Rational
+                        (name, dec_vector[0].get_value().c_str(), l, c);
             else if(dec_vector[0].get_type() == LEX_STRING ||
                     dec_vector[0].get_type() == LEX_RATIONAL)
             {
                 try
                 {
-                    idRational = new Ident_Rational(name, dec_vector[0].get_value().c_str(), l ,c);
+                    idRational = new Ident_Rational
+                            (name, dec_vector[0].get_value().c_str(), l ,c);
                 }
                 catch(const Sparse_ex &ex)
                 {
@@ -812,13 +857,18 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                 exeption("there is no such constructor for rational (" + get_dec_str());
             break;
         case 2:
-            if((dec_vector[0].get_type() == LEX_DIGIT && dec_vector[1].get_type() == LEX_DIGIT) ||
-                    (dec_vector[0].get_type() == LEX_STRING && dec_vector[1].get_type() == LEX_STRING))
+            if((dec_vector[0].get_type() == LEX_DIGIT &&
+                dec_vector[1].get_type() == LEX_DIGIT) ||
+                    (dec_vector[0].get_type() == LEX_STRING &&
+                     dec_vector[1].get_type() == LEX_STRING))
             {
                 try
                 {
-                    idRational = new Ident_Rational(name, Rational_number(dec_vector[0].get_value().c_str(),
-                                                    dec_vector[1].get_value().c_str()), l ,c);
+                    idRational = new Ident_Rational
+                            (name, Rational_number
+                             (dec_vector[0].get_value().c_str(),
+                                                    dec_vector[1].get_value().c_str()),
+                            l ,c);
                 }
                 catch(const Sparse_ex &ex)
                 {
@@ -843,12 +893,14 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
             break;
         case 1:
             if(dec_vector[0].get_type() == LEX_DIGIT)
-                idVector = new Ident_Vector(name, Vector(stoi(dec_vector[0].get_value())), l, c);
+                idVector = new Ident_Vector
+                        (name, Vector(stoi(dec_vector[0].get_value())), l, c);
             else if(dec_vector[0].get_type() == LEX_STRING)
             {
                 try
                 {
-                    idVector = new Ident_Vector(name, Vector(dec_vector[0].get_value().c_str()), l, c);
+                    idVector = new Ident_Vector
+                            (name, Vector(dec_vector[0].get_value().c_str()), l, c);
                 }
                 catch(const Sparse_ex &ex)
                 {
@@ -867,7 +919,9 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                 {
                     idVector = new Ident_Vector(name, Vector(
                                    stoi(dec_vector[0].get_value()),
-                                      Rational_number(dec_vector[1].get_value().c_str())), l, c);
+                                      Rational_number
+                                                (dec_vector[1].get_value().c_str())),
+                            l, c);
                 }
                 catch(Sparse_ex &ex)
                 {
@@ -891,12 +945,14 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
             break;
         case 1:
             if(dec_vector[0].get_type() == LEX_DIGIT)
-                idMatrix = new Ident_Matrix(name, Matrix(stoi(dec_vector[0].get_value())), l, c);
+                idMatrix = new Ident_Matrix
+                        (name, Matrix(stoi(dec_vector[0].get_value())), l, c);
             else if(dec_vector[0].get_type() == LEX_STRING)
             {
                 try
                 {
-                    idMatrix = new Ident_Matrix(name, Matrix(dec_vector[0].get_value().c_str()), l, c);
+                    idMatrix = new Ident_Matrix
+                            (name, Matrix(dec_vector[0].get_value().c_str()), l, c);
                 }
                 catch(const Sparse_ex &ex)
                 {
@@ -915,7 +971,9 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                     {
                         idMatrix = new Ident_Matrix(name,
                                        Matrix(stoi(dec_vector[0].get_value()),
-                                             Rational_number(dec_vector[1].get_value().c_str())), l, c);
+                                             Rational_number
+                                                    (dec_vector[1].get_value().c_str())),
+                                l, c);
                     }
                     catch(const Sparse_ex &ex)
                     {
@@ -926,9 +984,11 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                 {
                     try
                     {
-                        idMatrix = new Ident_Matrix(name,
-                                   Matrix(stoi(dec_vector[0].get_value()),
-                                                    stoi(dec_vector[1].get_value())), l, c);
+                        idMatrix = new Ident_Matrix
+                                (name, Matrix
+                                 (stoi
+                                  (dec_vector[0].get_value()), stoi
+                                 (dec_vector[1].get_value())), l, c);
                     }
                     catch(const Sparse_ex &ex)
                     {
@@ -951,9 +1011,12 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                     {
                         try
                         {
-                            idMatrix = new Ident_Matrix(name,
-                                    Matrix(stoi(dec_vector[0].get_value()), stoi(dec_vector[1].get_value()),
-                                      Rational_number(dec_vector[2].get_value().c_str())), l, c);
+                            idMatrix = new Ident_Matrix
+                                    (name, Matrix
+                                     (stoi(dec_vector[0].get_value()),
+                                     stoi(dec_vector[1].get_value()),
+                                      Rational_number
+                                    (dec_vector[2].get_value().c_str())), l, c);
                         }
                         catch(const Sparse_ex &ex)
                         {
@@ -961,7 +1024,8 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                         }
                     }
                     else
-                        exeption("there is no such constructor for matrix (" + get_dec_str());
+                        exeption("there is no such constructor for matrix (" +
+                                 get_dec_str());
                 }
                 else if(dec_vector[1].get_type() == LEX_RATIONAL)
                 {
@@ -969,7 +1033,11 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                     {
                         try
                         {
-                            idMatrix = new Ident_Matrix(name, Matrix(stoi(dec_vector[0].get_value()), Rational_number(dec_vector[1].get_value().c_str()), bool(stoi(dec_vector[2].get_value()))), l, c);
+                            idMatrix = new Ident_Matrix
+                                    (name, Matrix
+                                     (stoi(dec_vector[0].get_value()),
+                                     Rational_number(dec_vector[1].get_value().c_str()),
+                                    bool(stoi(dec_vector[2].get_value()))), l, c);
                         }
                         catch(const Sparse_ex &ex)
                         {
@@ -977,13 +1045,16 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                         }
                     }
                     else
-                        exeption("there is no such constructor for matrix (" + get_dec_str());
+                        exeption("there is no such constructor for matrix (" +
+                                 get_dec_str());
                 }
                 else
-                    exeption("there is no such constructor for matrix (" + get_dec_str());
+                    exeption("there is no such constructor for matrix (" +
+                             get_dec_str());
             }
             else
-                exeption("there is no such constructor for matrix (" + get_dec_str());
+                exeption("there is no such constructor for matrix (" +
+                         get_dec_str());
             break;
         default:
             exeption("there is no such constructor for matrix (" + get_dec_str());
@@ -992,7 +1063,7 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
         var_map.insert(pair<string, Ident*>(name, idMatrix));
         break;
     default:
-        throw "Smth bad happend in push_dec";
+        throw string("Smth bad happend in push_dec");
         break;
     }
     dec_vector.clear();
@@ -1022,8 +1093,10 @@ void Sin_analizarot::declaration()
             if(var_map.find(name) != var_map.end())
             {
                 id = var_map.find(name)->second;
-                exeption(string("redeclaration of '") + name + "' previously declared as "
-                         + lex_to_string(id->get_type()) + ":" + to_string(id->get_line()) +
+                exeption(string("redeclaration of '") + name +
+                         "' previously declared as "
+                         + lex_to_string(id->get_type()) + ":" +
+                         to_string(id->get_line()) +
                          ":" + to_string(id->get_column()) + ":");
             }
             gl();
@@ -1077,19 +1150,50 @@ void Sin_analizarot::parse()
     {
         gl();
         if(curr_lex.get_type() != LEX_COLON)
-            exeption(string("unexpected '") + lex_to_string(curr_lex.get_type()) + "' expected ':'");
+            exeption(string("unexpected '") +
+                     lex_to_string(curr_lex.get_type()) + "' expected ':'");
         gl();
         declare();
     }
     else
     {
         if(curr_lex.get_type() != LEX_PROCESS)
-            exeption(string("unexpected '") + lex_to_string(curr_lex.get_type()) + "' expected 'process'");
+            exeption(string("unexpected '") +
+                     lex_to_string(curr_lex.get_type()) + "' expected 'process'");
         gl();
         if(curr_lex.get_type() != LEX_COLON)
-            exeption(string("unexpected '") + lex_to_string(curr_lex.get_type()) + "' expected ':'");
+            exeption(string("unexpected '") +
+                     lex_to_string(curr_lex.get_type()) + "' expected ':'");
         gl();
         process();
+    }
+}
+
+void Sin_analizarot::execute()
+{
+    stack<Poliz*> pol;
+    for(Poliz *i : poliz_vector)
+    {
+        switch (i->get_type()) {
+        case LEX_INFO:
+        case LEX_FUNCTION:
+            i->execute(pol);
+            break;
+        case LEX_CONST:
+        case LEX_VAR:
+            try
+            {
+                pol.push(i);
+            }
+            catch(string &ex)
+            {
+                throw filename + ex;
+            }
+            break;
+        default:
+            throw string("smth bad happend in execute");
+            break;
+        }
     }
 }
 Sin_analizarot::~Sin_analizarot()

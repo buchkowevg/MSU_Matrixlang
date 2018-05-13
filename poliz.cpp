@@ -1743,6 +1743,7 @@ void Poliz_Function::execute(std::stack<Poliz *> &pol)
     }
     catch(string &ex)
     {
+        semicolon(pol);
         throw  ":" + to_string(this->get_lexem().get_line()) + ":" +
                 to_string(this->get_lexem().get_column()) + ": error: in operator '" +
                 lex_to_string(oper) + "' " + ex;

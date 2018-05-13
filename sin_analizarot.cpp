@@ -3,7 +3,7 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
-#include "../sparse/sparse_ex.h"
+#include "../qt/sparse/sparse_ex.h"
 using namespace std;
 
 string lex_to_string(type_of_lex);

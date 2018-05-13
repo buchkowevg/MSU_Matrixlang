@@ -4,7 +4,7 @@
 #include <vector>
 #include <ostream>
 #include "lex.h"
-#include "../sparse/matrix.h"
+#include "../qt/sparse/matrix.h"
 
 class Ident
 {

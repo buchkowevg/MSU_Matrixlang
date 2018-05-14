@@ -3,7 +3,7 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
-#include "../qt/sparse/sparse_ex.h"
+#include "../sparse/sparse_ex.h"
 using namespace std;
 
 string lex_to_string(type_of_lex);
@@ -420,7 +420,6 @@ void Sin_analizarot::function()
 }
 void Sin_analizarot::square_oper()
 {
-
     info();
     if(curr_lex.get_type() == LEX_COLON)
     {
@@ -889,18 +888,18 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
         switch (dec_vector.size())
         {
         case 0:
-            idVector = new Ident_Vector(name, Vector(0), l, c);
+            idVector = new Ident_Vector(name, Vector(0), false, l, c);
             break;
         case 1:
             if(dec_vector[0].get_type() == LEX_DIGIT)
                 idVector = new Ident_Vector
-                        (name, Vector(stoi(dec_vector[0].get_value())), l, c);
+                        (name, Vector(stoi(dec_vector[0].get_value())), false, l, c);
             else if(dec_vector[0].get_type() == LEX_STRING)
             {
                 try
                 {
                     idVector = new Ident_Vector
-                            (name, Vector(dec_vector[0].get_value().c_str()), l, c);
+                            (name, Vector(dec_vector[0].get_value().c_str()), false, l, c);
                 }
                 catch(const Sparse_ex &ex)
                 {
@@ -921,7 +920,7 @@ void Sin_analizarot::push_dec(string &name, unsigned int l, unsigned int c)
                                    stoi(dec_vector[0].get_value()),
                                       Rational_number
                                                 (dec_vector[1].get_value().c_str())),
-                            l, c);
+                             false, l, c);
                 }
                 catch(Sparse_ex &ex)
                 {
@@ -1074,45 +1073,47 @@ void Sin_analizarot::declaration()
     Ident *id = nullptr;
     unsigned int line = 0;
     unsigned int column = 0;
+    if(curr_lex.get_type() == LEX_SEMICOLON)
+    {
+        gl();
+        return;
+    }
     while(true)
     {
+        if(curr_lex.get_type() != LEX_VAR)
+            exeption(string("unexpected '") +
+                     lex_to_string(curr_lex.get_type()) +
+                     "' expected name");
+        line = curr_lex.get_line();
+        column = curr_lex.get_column();
+        name = curr_lex.get_value();
+        if(var_map.find(name) != var_map.end())
+        {
+            id = var_map.find(name)->second;
+            exeption(string("redeclaration of '") + name +
+                     "' previously declared as "
+                     + lex_to_string(id->get_type()) + ":" +
+                     to_string(id->get_line()) +
+                     ":" + to_string(id->get_column()) + ":");
+        }
+        gl();
+        if(curr_lex.get_type() == LEX_OPEN_ROUND_BRACKET)
+        {
+            gl();
+            constructor();
+        }
+        push_dec(name, line, column);
+        if(curr_lex.get_type() != LEX_COMMA && curr_lex.get_type() != LEX_SEMICOLON)
+            exeption(string("unexpected '") +
+                     lex_to_string(curr_lex.get_type()) +
+                     "' expected ',' or ';'");
         if(curr_lex.get_type() == LEX_SEMICOLON)
         {
             gl();
             return;
         }
-        else
-        {
-            if(curr_lex.get_type() != LEX_VAR)
-                exeption(string("unexpected '") +
-                         lex_to_string(curr_lex.get_type()) +
-                         "' expected name");
-            line = curr_lex.get_line();
-            column = curr_lex.get_column();
-            name = curr_lex.get_value();
-            if(var_map.find(name) != var_map.end())
-            {
-                id = var_map.find(name)->second;
-                exeption(string("redeclaration of '") + name +
-                         "' previously declared as "
-                         + lex_to_string(id->get_type()) + ":" +
-                         to_string(id->get_line()) +
-                         ":" + to_string(id->get_column()) + ":");
-            }
+        if(curr_lex.get_type() == LEX_COMMA)
             gl();
-            if(curr_lex.get_type() == LEX_OPEN_ROUND_BRACKET)
-            {
-                gl();
-                constructor();
-            }
-            push_dec(name, line, column);
-            if(curr_lex.get_type() != LEX_COMMA && curr_lex.get_type() != LEX_SEMICOLON)
-                exeption(string("unexpected '") +
-                         lex_to_string(curr_lex.get_type()) +
-                         "' expected ',' or ';'");
-            if(curr_lex.get_type() == LEX_COMMA)
-                gl();
-        }
     }
 }
 void Sin_analizarot::declare()

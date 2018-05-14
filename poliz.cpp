@@ -1,5 +1,5 @@
 #include "poliz.h"
-#include "../qt/sparse/sparse_ex.h"
+#include "../sparse/sparse_ex.h"
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -559,11 +559,22 @@ void Poliz_Function::mul(std::stack<Poliz *> &pol)
         case LEX_VECTOR:
             if(op2->get_type() == LEX_VECTOR)
             {
-                if(static_cast<Ident_Vector*>(op1)->get_rotation() != static_cast<Ident_Vector*>(op2)->get_rotation())
+                if(static_cast<Ident_Vector*>(op1)->get_rotation() == true &&
+                   static_cast<Ident_Vector*>(op2)->get_rotation() == false)
                     pol.push(new Poliz_Const
                              (new Ident_Rational
                               ("", static_cast<Ident_Vector*>(op1)->get_value() *
                                static_cast<Ident_Vector*>(op2)->get_value()), Lex(), LEX_TEMP_CONST));
+                else if(static_cast<Ident_Vector*>(op1)->get_rotation() == false &&
+                        static_cast<Ident_Vector*>(op2)->get_rotation() == true)
+                {
+                    pol.push(new Poliz_Const
+                             (new Ident_Matrix
+                              ("", Matrix(static_cast<Ident_Vector*>(op1)->get_value(),
+                                            static_cast<Ident_Vector*>(op1)->get_rotation()) *
+                               Matrix(static_cast<Ident_Vector*>(op2)->get_value(),
+                                        static_cast<Ident_Vector*>(op2)->get_rotation())), Lex(), LEX_TEMP_CONST));
+                }
                 else
                 {
                     if(p1->get_type() == LEX_TEMP_CONST)

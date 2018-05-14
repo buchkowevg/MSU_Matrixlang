@@ -1,0 +1,30 @@
+<START> -> '/'<SLASH>|'"'<QUOT>|<ISDEVIDER><START>|<ISDIGIT><DIGIT>|
+			<ISALPHABET><VAR>|'#'<COMM>
+
+<VAR> -> '#'<COMM>|'"'<QUOT>|'/'<SLASH>|¬'#' ¬'"' ¬'/' ¬<ISDEVIDER><VAR>|
+		 <ISDEVIDER><START>
+
+<DIGIT> -> ¬'.' <ISDIGIT><DIGIT>|'.'<FLOAT>|<ISDEVIDER><START>|
+		   '#'<COMM>|'"'<QUOT>|'/'<SLASH>
+
+<FLOAT> -> <ISDIGIT><FLOAT>|<ISDEVIDER><START>|'#'<COMM>|'"'<QUOT>|
+		   '/'<SLASH>
+
+<QUOT> -> '\'<BACKSLASH>|¬'"' ¬'\' ¬'"'<QUOT>|'"'<START>
+
+<BACKSLASH> -> .<QUOT>
+
+<SLASH> -> '*'<BIGCOMM>|¬'*'<START>
+
+<BIGCOMM> -> ¬'*'<BIGCOMM>|'*'<STAR>
+
+<STAR> -> '/'<START>|¬'/'<BIGCOMM>
+
+<COMM> -> '\n'<START>|¬'\n'<COMM>
+
+<ISALPHABET> -> ¬<ISDIGIT> ¬<ISDEVIDER> ¬'.' ¬'#' ¬'/'
+
+<ISDIGIT> -> '1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'0'
+
+<ISDEVIDER> -> ','|'('|')'|'"'|'*'|':'|';'|
+			  '['|']'|'+'|'-'|'='|'^'|' '|'\n'

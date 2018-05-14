@@ -1177,7 +1177,14 @@ void Sin_analizarot::execute()
         switch (i->get_type()) {
         case LEX_INFO:
         case LEX_FUNCTION:
+            try
+            {
             i->execute(pol);
+            }
+            catch(string &ex)
+            {
+                throw filename + ex;
+            }
             break;
         case LEX_CONST:
         case LEX_VAR:

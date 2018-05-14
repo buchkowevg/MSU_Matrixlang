@@ -99,7 +99,8 @@ poliz.o: poliz.cpp poliz.h \
 		../qt/sparse/matrix_coord.h \
 		../qt/sparse/rational_number.h \
 		../qt/sparse/mystring.h \
-		../qt/sparse/vector.h
+		../qt/sparse/vector.h \
+		../qt/sparse/sparse_ex.h
 	$(CXX) -c $(CXXFLAGS) -o poliz.o poliz.cpp
 clean:
 	rm $(OBJECTS) analizator 

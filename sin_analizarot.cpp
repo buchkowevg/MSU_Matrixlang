@@ -3,7 +3,7 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
-#include "../sparse/sparse_ex.h"
+#include "./sparse/sparse_ex.h"
 using namespace std;
 
 string lex_to_string(type_of_lex);
@@ -783,7 +783,10 @@ void Sin_analizarot:: constructor1()
 void Sin_analizarot::constructor()
 {
     if(curr_lex.get_type() == LEX_CLOSE_ROUND_BRACKET)
+    {
+        gl();
         return;
+    }
     constructor1();
     gl();
 }

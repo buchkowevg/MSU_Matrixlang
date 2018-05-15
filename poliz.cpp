@@ -1,5 +1,5 @@
 #include "poliz.h"
-#include "../sparse/sparse_ex.h"
+#include "./sparse/sparse_ex.h"
 #include <iostream>
 #include <cmath>
 #include <fstream>

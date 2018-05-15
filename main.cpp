@@ -16,7 +16,7 @@ int main(int argc, char** argv)
     {
         d.open(argv[1]);
         d.parse();
-        d.write("lex_log.txt");
+        d.write("./logs/lex_log.txt");
     }
     catch(const string &ex)
     {
@@ -27,8 +27,8 @@ int main(int argc, char** argv)
     try
     {
         s.parse();
-        s.write_var_map("var_map.txt");
-        s.write_poliz("poliz_log.txt");
+        s.write_var_map("./logs/var_map.txt");
+        s.write_poliz("./logs/poliz_log.txt");
         s.execute();
     }
     catch(const string &ex)

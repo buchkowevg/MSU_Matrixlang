@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS= -Wextra -g 
+CXXFLAGS= -std=c++0x -Wextra -g 
 OBJECTS       = main.o \
 		matrix.o \
 		matrix_coord.o \
